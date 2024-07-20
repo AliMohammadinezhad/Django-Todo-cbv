@@ -10,7 +10,7 @@ from .forms import TodoForm
 
 class TodoListView(LoginRequiredMixin, ListView):
     model = Todo
-    template_name = "index.html"
+    template_name = "todo/index.html"
     context_object_name = "todos"
 
     def get_queryset(self):
@@ -20,7 +20,6 @@ class TodoListView(LoginRequiredMixin, ListView):
 class TodoCreateView(LoginRequiredMixin, CreateView):
     model = Todo
     fields = ["name"]
-    template_name = "create.html"
     context_object_name = "todo"
     success_url = reverse_lazy("todo:todo-list")
 
@@ -31,9 +30,10 @@ class TodoCreateView(LoginRequiredMixin, CreateView):
 
 class TodoUpdateView(LoginRequiredMixin, UpdateView):
     model = Todo
-    fields = ["status"]
+    # form_class = TodoForm
+    fields = ["name"]
     success_url = reverse_lazy("todo:todo-list")
-    template_name = "index.html"
+    template_name = "todo/update.html"
 
 
 class TodoDeleteView(LoginRequiredMixin, DeleteView):

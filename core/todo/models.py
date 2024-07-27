@@ -1,5 +1,7 @@
+
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Todo(models.Model):
@@ -14,4 +16,8 @@ class Todo(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def get_absolute_api_url(self):
+        return reverse("todo:api-v1:todo-detail", kwargs={"pk": self.pk})
+    
     

@@ -1,4 +1,5 @@
-FROM python:3.12-slim
+# use arvan cloud mirror images for installation of docker images
+FROM docker.arvancloud.ir/python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -7,8 +8,9 @@ WORKDIR /app
 
 COPY ./core/requirements.txt /app/
 
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# use runflare mirror images for installation with pip 
+RUN pip install -i https://mirror-pypi.runflare.com/simple --upgrade pip
+RUN pip install -i https://mirror-pypi.runflare.com/simple -r requirements.txt
 
 COPY ./core /app/
 

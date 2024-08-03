@@ -35,7 +35,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         
     def create(self, validated_data):
         validated_data.pop('password1', None)
-        return User.objects.create(**validated_data)
+        return User.objects.create_user(**validated_data)
 
 class CustomAuthTokenSerializer(serializers.Serializer):
     username = serializers.CharField(
@@ -128,3 +128,38 @@ class ActivationResendSerializer(serializers.Serializer):
             raise serializers.ValidationError({"details":"user has been already activated and verified"})
         attrs['user'] = user_obj
         return super().validate(attrs) 
+    
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    
+    
+    def validate(self, attrs):
+        email = attrs.get("email")
+        
+        try:
+            user_obj = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({"details":"User does not exist."})
+        if not user_obj.is_active:
+            raise serializers.ValidationError({"details":"User is not activated."})
+        attrs['user'] = user_obj
+        return super().validate(attrs)
+
+class ChangePasswordConfirmSerializer(serializers.Serializer):
+    new_password1 = serializers.CharField(required=True)
+    new_password2 = serializers.CharField(required=True)
+        
+    def validate(self, attrs):
+        new_password1 = attrs.get("new_password1")
+        new_password2 = attrs.get("new_password2")
+        
+        
+        if new_password1 != new_password2:
+            raise serializers.ValidationError({"details":"passwords do not match"})
+        
+        try:
+            validate_password(new_password1)
+        except exceptions.ValidationError as e:
+            raise serializers.ValidationError({"password": list(e.messages)})
+                
+        return super().validate(attrs)

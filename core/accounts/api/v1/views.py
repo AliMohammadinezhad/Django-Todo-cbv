@@ -12,13 +12,14 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from mail_templated import EmailMessage
 import jwt
 
-
 from ..utils.threading import EmailThread
 from .serializers import (
     RegistrationSerializer,
     CustomAuthTokenSerializer,
     ChangePasswordSerializer,
     ActivationResendSerializer,
+    ResetPasswordSerializer,
+    ChangePasswordConfirmSerializer,
 )
 
 User = get_user_model()
@@ -152,3 +153,50 @@ class ActivationResendApiView(generics.GenericAPIView):
     def get_token_for_user(self, user):
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)
+    
+class ResetPasswordView(generics.GenericAPIView):
+    serializer_class = ResetPasswordSerializer
+    
+    def post(self, request,*args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data.get('email')
+        data = {
+            "details": 
+                f"Reset email sent to: {email}"
+            
+        }
+        user_obj = serializer.validated_data.get('user')
+        token = self.get_token_for_user(user_obj)
+        email_obj = EmailMessage(
+            "email/reset_email.tpl",
+            {"token": token},
+            "admin@admin.com",
+            to=[email],
+        )
+        EmailThread(email_obj).start()
+        return Response(data, status=status.HTTP_200_OK)
+    
+    def get_token_for_user(self, user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
+
+class ResetPasswordConfirmView(generics.GenericAPIView):
+    serializer_class = ChangePasswordConfirmSerializer
+    
+    def post(self, request, token, *args, **kwargs):
+        try:
+            token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = token.get('user_id')
+        except jwt.exceptions.ExpiredSignatureError:
+            return Response({"details":"token has been expired"}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.exceptions.InvalidSignatureError:
+            return Response({"details":"token is not valid"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        password = serializer.validated_data['new_password1']
+        user_obj = get_object_or_404(User, pk=user_id)
+        user_obj.set_password(password)
+        user_obj.save()
+        return Response({"details": "password changed succefully."})

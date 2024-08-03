@@ -27,6 +27,10 @@ urlpatterns = [
         name="change-password",
     ),
     
+    # password reset
+    path("reset-password/", views.ResetPasswordView.as_view(), name="reset-password"),
+    path('reset-password/confirm/<str:token>', views.ResetPasswordConfirmView.as_view(), name="reset-password-confirm"),
+    
     
     # login jwt
     path('jwt/create/', auth_views.TokenObtainPairView.as_view(), name='token-create'),

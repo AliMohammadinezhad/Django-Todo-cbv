@@ -11,3 +11,10 @@ drf-yasg[validation]
 djangorestframework-simplejwt
 django-mail-templated
 # deployment modules
+
+
+# reformatting and testing modules
+flake8
+black
+pytest
+pytest-django

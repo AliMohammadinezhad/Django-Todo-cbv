@@ -28,21 +28,21 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
     path("", include("todo.urls")),
-    ]
+]
 
 if settings.DEBUG:
     schema_view = get_schema_view(
-   openapi.Info(
-      title="Todo API Documentation",
-      default_version='v1',
-      description="Todo api with django rest framework",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="alimn1382@gmail.com"),
-      license=openapi.License(name="MIT License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
-)
+        openapi.Info(
+            title="Todo API Documentation",
+            default_version="v1",
+            description="Todo api with django rest framework",
+            terms_of_service="https://www.google.com/policies/terms/",
+            contact=openapi.Contact(email="alimn1382@gmail.com"),
+            license=openapi.License(name="MIT License"),
+        ),
+        public=True,
+        permission_classes=(permissions.AllowAny,),
+    )
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += [
         path(

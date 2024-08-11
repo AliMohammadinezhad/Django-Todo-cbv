@@ -1,19 +1,25 @@
 import pytest
 from django.urls import reverse
 
-from ...fixtures.api_fixtures import api_client,common_user, valid_payload, invalid_payload
+from ...fixtures.api_fixtures import (
+    api_client,
+    common_user,
+    valid_payload,
+    invalid_payload,
+)
+
 
 @pytest.mark.django_db
 class TestTodoApiPost:
-    
+
     def test_post_todo_with_valid_data_common_user(self, api_client, common_user):
         api_client.force_authenticate(user=common_user)
         url = reverse("todo:api-v1:todo-list")
         response = api_client.post(url, data=valid_payload)
         assert response.data["user"] == common_user.id
-        assert response.data['name'] == valid_payload['name']
+        assert response.data["name"] == valid_payload["name"]
         assert response.status_code == 201
-    
+
     def test_post_todo_with_invalid_data_common_user(self, api_client, common_user):
         api_client.force_authenticate(user=common_user)
         url = reverse("todo:api-v1:todo-list")

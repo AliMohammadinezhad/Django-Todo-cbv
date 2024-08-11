@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_yasg",
     "rest_framework_simplejwt",
-    'mail_templated',
+    "mail_templated",
 ]
 
 MIDDLEWARE = [
@@ -150,7 +150,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
     # 'DEFAULT_PERMISSION_CLASSES':(
     #             'rest_framework.permissions.IsAuthenticated',
     # ),
@@ -161,7 +161,7 @@ REST_FRAMEWORK = {
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_TLS = False
-EMAIL_HOST = 'smtp4dev'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST = "smtp4dev"
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
 EMAIL_PORT = 25

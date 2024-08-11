@@ -8,8 +8,8 @@ from .models import User
 class CustomUserAdmin(UserAdmin):
     model = User
     list_display = ("username", "email", "is_superuser", "is_active")
-    list_filter = ("username", "email","is_superuser", "is_active")
-    search_fields = ("username","email")
+    list_filter = ("username", "email", "is_superuser", "is_active")
+    search_fields = ("username", "email")
     ordering = ("username",)
     fieldsets = (
         ("Authentication", {"fields": ("username", "password")}),
@@ -22,18 +22,20 @@ class CustomUserAdmin(UserAdmin):
                     "is_superuser",
                 )
             },
-        ),("Group Permissions",
+        ),
+        (
+            "Group Permissions",
             {
                 "fields": (
                     "groups",
                     "user_permissions",
                 )
-            },),("Important dates",
-            {
-                "fields": (
-                    "last_login",
-                )
-            },),
+            },
+        ),
+        (
+            "Important dates",
+            {"fields": ("last_login",)},
+        ),
     )
     add_fieldsets = (
         (
@@ -48,7 +50,8 @@ class CustomUserAdmin(UserAdmin):
                 ),
             },
         ),
-        ("User Permissions",
+        (
+            "User Permissions",
             {
                 "fields": (
                     "is_staff",
@@ -57,5 +60,6 @@ class CustomUserAdmin(UserAdmin):
                     "groups",
                     "user_permissions",
                 ),
-            }),
+            },
+        ),
     )

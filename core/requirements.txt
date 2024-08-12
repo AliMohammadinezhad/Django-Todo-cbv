@@ -20,3 +20,9 @@ black
 pytest
 pytest-django
 Faker
+
+
+# background proccess and cache modules
+celery
+redis
+django-celery-beat

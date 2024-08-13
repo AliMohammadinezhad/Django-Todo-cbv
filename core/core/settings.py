@@ -172,4 +172,24 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
 ]
+
+
+CELERY_BROKER_URL = "redis://redis:6379/1"
+
+# CELERY_BEAT_SCHEDULE = {
+#     "send_email": {"task": "accounts.tasks.email", "schedule": 5}  # seconds
+# }
+
+# caching databse configuration
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}

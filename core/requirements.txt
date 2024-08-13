@@ -1,3 +1,6 @@
+# base modules
+requests
+
 # general modules
 django<4.3,>4.2
 python-decouple
@@ -20,3 +23,11 @@ black
 pytest
 pytest-django
 Faker
+
+
+# background proccess and cache modules
+celery
+redis
+django-celery-beat
+django-redis
+

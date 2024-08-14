@@ -13,8 +13,10 @@ services:
     command: gunicorn core.wsgi --bind 0.0.0.0:8000
     volumes:
       - ./core:/app
-    ports:
-      - "8000:8000"
+      - static_volume:/app/statics
+      - media_volume:/app/media
+    expose:
+      - "8000"
     environment:
       - SECRET_KEY=test
       - DEBUG=False
@@ -29,3 +31,21 @@ services:
     depends_on:
       - redis
       - backend
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/home/app/statics
+      - media_volume:/home/app/media
+    depends_on:
+      - redis
+      - backend
+
+volumes:
+  static_volume:
+  media_volume:

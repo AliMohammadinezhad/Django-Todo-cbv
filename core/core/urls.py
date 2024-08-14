@@ -30,7 +30,7 @@ urlpatterns = [
     path("", include("todo.urls")),
 ]
 
-if settings.DEBUG:
+if not settings.DEBUG:
     schema_view = get_schema_view(
         openapi.Info(
             title="Todo API Documentation",

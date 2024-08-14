@@ -22,6 +22,17 @@ services:
       - DEBUG=False
     depends_on:
       - redis
+      - db
+  
+  db:
+    image: postgres
+    container_name: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=hello_django
+      - POSTGRES_PASSWORD=hello_django
+      - POSTGRES_DB=hello_django_dev
 
   worker:
     build: .
@@ -31,6 +42,7 @@ services:
     depends_on:
       - redis
       - backend
+      - db
 
   nginx:
     image: nginx
@@ -45,7 +57,9 @@ services:
     depends_on:
       - redis
       - backend
+      - db
 
 volumes:
   static_volume:
   media_volume:
+  postgres_data:

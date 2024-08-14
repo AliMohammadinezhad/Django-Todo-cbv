@@ -16,7 +16,7 @@ django-mail-templated
 django-cors-headers
 # deployment modules
 gunicorn
-
+psycopg2-binary
 # reformatting and testing modules
 flake8
 black

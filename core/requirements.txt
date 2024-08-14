@@ -1,3 +1,6 @@
+# base modules
+requests
+
 # general modules
 django<4.3,>4.2
 python-decouple
@@ -26,3 +29,5 @@ Faker
 celery
 redis
 django-celery-beat
+django-redis
+
